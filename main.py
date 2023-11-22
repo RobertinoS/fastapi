@@ -5,14 +5,10 @@ from typing import Optional
 
 app = FastAPI()
 
-df_play=pd.read_parquet('df_playtime_parquet.parquet')
-df_usegenre=pd.read_parquet('df_userforgenre_parquet.parquet')
+df_play=pd.read_parquet('data/df_playtime_parquet.parquet')
+df_usegenre=pd.read_parquet('data/df_useforgenre_parquet.parquet')
 
-class Libro(BaseModel):
-    titulo: str
-    autor: str
-    paginas: int
-    editorial: str
+
 
 #http://127.0.0.1:8000 (ruta raiz)
 @app.get("/")                       #ruta
