@@ -10,8 +10,8 @@ app = FastAPI()
 def read_root():                    #FUNCION EN ESTA RUTA
     return {"Hello": "World"}
     
-df_play=pd.read_parquet('data/df_playtime_parquet.parquet')
-df_usegenre=pd.read_parquet('data/df_useforgenre_parquet.parquet')
+df_play=pd.read_parquet('data/df_playtime.parquet')
+#df_usegenre=pd.read_parquet('data/df_useforgenre_parquet.parquet')
 
 @app.get('/PlayTimeGenre')
 def PlayTimeGenre(genero: str):
@@ -31,7 +31,7 @@ def PlayTimeGenre(genero: str):
     
     # Retornar el resultado como un diccionario
     return {"Año de lanzamiento con más horas jugadas para Género {}".format(genero): max_playtime_year, "Horas jugadas": max_playtime}
-
+'''
 @app.get('/UserForGenre')
 def UserForGenre(genero):
         # Filtrar por el género especificado
@@ -57,7 +57,7 @@ def UserForGenre(genero):
     acumulacion_horas = [{'Año': year, 'Horas': hours} for year, hours in grouped_by_year.items()]
     
     # Retornar el resultado como un diccionario
-    return {"Usuario con más horas jugadas para Género {}".format(genero): max_playtime_user, "Horas jugadas": acumulacion_horas}
+    return {"Usuario con más horas jugadas para Género {}".format(genero): max_playtime_user, "Horas jugadas": acumulacion_horas}'''
     
 
 
