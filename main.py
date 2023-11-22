@@ -15,7 +15,10 @@ df_play=pd.read_parquet('data/df_playtime.parquet')
 
 @app.get('/PlayTimeGenre')
 def PlayTimeGenre(genero: str):
-  # Filtrar por el género especificado
+    # Realizar el merge de los DataFrames
+    #df_merge = pd.merge(df_games[['genres', 'release_anio', 'item_id']], df_items[['playtime_forever', 'item_id']], on='item_id')
+    
+    # Filtrar por el género especificado
     df_genre = df_play[df_play['genres'] == genero]
     
     # Si no hay datos para el género especificado, retorna un mensaje
@@ -27,10 +30,11 @@ def PlayTimeGenre(genero: str):
     
     # Encontrar el año con más horas jugadas
     max_playtime_year = grouped.idxmax()
-    max_playtime = grouped.max()
+    #max_playtime = grouped.max()
     
     # Retornar el resultado como un diccionario
-    return {"Año de lanzamiento con más horas jugadas para Género {}".format(genero): max_playtime_year, "Horas jugadas": max_playtime}
+    return {"Año de lanzamiento con más horas jugadas para Género {}".format(genero): max_playtime_year}
+    
 '''
 @app.get('/UserForGenre')
 def UserForGenre(genero):
