@@ -11,7 +11,7 @@ def read_root():                    #FUNCION EN ESTA RUTA
     return {"Hello": "World"}
     
 df_play=pd.read_parquet('data/df_playtime.parquet')
-df_merge_g2_group=pd.read_parquet('data/df_useforgenre_parquet.parquet')
+df_merge_g2_group=pd.read_parquet('data/df_useforgenre.parquet')
 
 @app.get('/PlayTimeGenre')
 def PlayTimeGenre(genero: str):
