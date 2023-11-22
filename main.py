@@ -5,15 +5,13 @@ from typing import Optional
 
 app = FastAPI()
 
-df_play=pd.read_parquet('data/df_playtime_parquet.parquet')
-df_usegenre=pd.read_parquet('data/df_useforgenre_parquet.parquet')
-
-
-
 #http://127.0.0.1:8000 (ruta raiz)
 @app.get("/")                       #ruta
 def read_root():                    #FUNCION EN ESTA RUTA
     return {"Hello": "World"}
+    
+df_play=pd.read_parquet('data/df_playtime_parquet.parquet')
+df_usegenre=pd.read_parquet('data/df_useforgenre_parquet.parquet')
 
 @app.get('/PlayTimeGenre')
 def PlayTimeGenre(genero: str):
