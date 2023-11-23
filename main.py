@@ -17,6 +17,7 @@ df_useforgenre=pd.read_parquet('data/df_useforgenre.parquet')
 df_items_sim=pd.read_parquet('data/df_items_sim.parquet')
 df_worst_1=pd.read_parquet('data/df_worst.parquet')
 df_senti=pd.read_parquet('data/df_senti.parquet')
+df_recom=pd.read_parquet('data/df_recom.parquet')
 
 
 @app.get('/PlayTimeGenre')
@@ -57,6 +58,21 @@ def UserForGenre(genero):
     acumulacion_horas = [{'Año': year, 'Horas': hours} for year, hours in grouped_by_year.items()]    
     # Retornar el resultado como un diccionario
     return {"Usuario con más horas jugadas para Género {}".format(genero): max_playtime_user, "Horas jugadas": acumulacion_horas}
+@app.get('/UsersRecommend') 
+
+def UsersRecommend( año : int):
+    # Filtrar el DataFrame df_top3 por el año proporcionado
+    top3_by_year = df_recom[df_recom['release_anio'] == año]
+
+#Crear la lista de diccionarios
+    resultado = []
+    for index, row in top3_by_year.iterrows():
+        puesto = row['rank']
+        titulo = row['title']
+        año = int(row['release_anio'])
+        resultado.append({f"Puesto {puesto}": f"{titulo}"})
+    return resultado
+    # retorno: [{"Puesto 1" : X}, {"Puesto 2" : Y},{"Puesto 3" : Z}]
     
 @app.get('/UsersWorstDeveloper')  
 def UsersWorstDeveloper( año : int ):
