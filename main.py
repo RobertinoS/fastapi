@@ -58,7 +58,7 @@ def UserForGenre(genero):
 
 @app.get('/recomendacion_juego')
 def recomendacion_juego(game):
-   similar_games = df_items_sim.sort_values(by=game, ascending=False).iloc[1:6]
+    similar_games = df_items_sim.sort_values(by=game, ascending=False).iloc[1:6]
     count = 1
     contador = 1
     recomendaciones = {}
