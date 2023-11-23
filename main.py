@@ -13,7 +13,8 @@ def read_root():                    #FUNCION EN ESTA RUTA
 df_play=pd.read_parquet('data/df_playtime.parquet')
 df_merge_g2_group=pd.read_parquet('data/df_useforgenre.parquet')
 tabla_pivote_norm=pd.read_parquet('data\tabla_pivote_norm.parquet')
-df_users_sim=pd.read_parquet('data\df_items_sim.parquet')
+#df_users_sim=pd.read_parquet('data\df_items_sim.parquet')
+df_items_sim=pd.read_parquet('data\df_items_sim.parquet')
 
 
 @app.get('/PlayTimeGenre')
@@ -37,9 +38,25 @@ def PlayTimeGenre(genero: str):
     
     # Retornar el resultado como un diccionario
     return {"Año de lanzamiento con más horas jugadas para Género {}".format(genero): max_playtime_year}
-    
+@app.get('/recomendacion_juego')
+def recomendacion_juego(game):
+    '''
+    Muestra una lista de juegos similares a un juego dado.
 
-@app.get('/UserForGenre')
+    Args:
+        game (str): El nombre del juego para el cual se desean encontrar juegos similares.
+
+    Returns:
+        None: Esta función imprime una lista de juegos 5 similares al dado.
+
+    '''
+    count = 1
+    print('Similar games to {} include:\n'.format(game))
+    for item in df_items_sim.sort_values(by = game, ascending = False).index[1:6]:
+        print('No. {}: {}'.format(count, item))
+        count +=1    
+
+'''@app.get('/UserForGenre')
 def UserForGenre(genero: str):
     # Realizar el merge de los DataFrames
     #df_merge = pd.merge(df_games[['genres', 'item_id', 'release_anio']], df_items[['playtime_forever', 'item_id']], on='item_id')
@@ -67,35 +84,8 @@ def UserForGenre(genero: str):
     acumulacion_horas = [{'Año': year, 'Horas': hours} for year, hours in grouped_by_year.items()]
     
     # Retornar el resultado como un diccionario
-    return {"Usuario con más horas jugadas para Género {}".format(genero): max_playtime_user, "Horas jugadas": acumulacion_horas}
+    return {"Usuario con más horas jugadas para Género {}".format(genero): max_playtime_user, "Horas jugadas": acumulacion_horas}'''
 
-@app.get('/recomendacion_usuario')
-def recomendacion_usuario(user):
-   
-    '''
-    Muestra una lista de los usuarios más similares a un usuario dado y sus valores de similitud.
-
-    Args:
-        user (str): El nombre o identificador del usuario para el cual se desean encontrar usuarios similares.
-
-    Returns:
-        None: Esta función imprime la lista de usuarios similares y sus valores de similitud en la consola.
-
-    '''
-    # Verifica si el usuario está presente en las columnas de piv_norm (si no está, devuelve un mensaje)
-    if user not in tabla_pivote_norm.columns:
-        return('No data available on user {}'.format(user))
-    
-    print('Most Similar Users:\n')
-    # Ordena los usuarios por similitud descendente y toma los 5 usuarios más similares (excluyendo el propio 'user')
-    sim_values = df_users_sim.sort_values(by=user, ascending=False).loc[:,user].tolist()[1:6]
-    sim_users = df_users_sim.sort_values(by=user, ascending=False).index[1:11]
-    # Combina los nombres de usuario y los valores de similitud en una lista de tuplas
-    zipped = zip(sim_users, sim_values,)
-    
-    # Itera a través de las tuplas y muestra los usuarios similares y sus valores de similitu
-    for user, sim in zipped:
-        print('User #{0}, Similarity value: {1:.2f}'.format(user, sim)) 
     
 
 
