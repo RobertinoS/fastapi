@@ -11,7 +11,7 @@ def read_root():                    #FUNCION EN ESTA RUTA
     return {"Hello": "World"}
     
 df_play=pd.read_parquet('data/df_playtime.parquet')
-df_useforgenre=pd.read_parquet('data/df_useforgenre.parquet')
+#df_useforgenre=pd.read_parquet('data/df_useforgenre.parquet')
 #tabla_pivote_norm=pd.read_parquet('data\tabla_pivote_norm.parquet')
 #df_users_sim=pd.read_parquet('data\df_items_sim.parquet')
 df_items_sim=pd.read_parquet('data\df_items_sim.parquet')
@@ -34,7 +34,7 @@ def PlayTimeGenre(genero: str):
     # Retornar el resultado como un diccionario
     return {"Año de lanzamiento con más horas jugadas para Género {}".format(genero): max_playtime_year}    
     
-@app.get('/UserForGenre')
+'''@app.get('/UserForGenre')
 def UserForGenre(genero):
     # Realizar el merge de los DataFrames
     #df_merge = pd.merge(df_games[['genres', 'item_id', 'release_anio']], df_items[['playtime_forever', 'item_id']], on='item_id')    
@@ -54,7 +54,7 @@ def UserForGenre(genero):
     # Crear lista de acumulación de horas jugadas por año
     acumulacion_horas = [{'Año': year, 'Horas': hours} for year, hours in grouped_by_year.items()]    
     # Retornar el resultado como un diccionario
-    return {"Usuario con más horas jugadas para Género {}".format(genero): max_playtime_user, "Horas jugadas": acumulacion_horas}
+    return {"Usuario con más horas jugadas para Género {}".format(genero): max_playtime_user, "Horas jugadas": acumulacion_horas}'''
 
 @app.get('/recomendacion_juego')
 def recomendacion_juego(game):
