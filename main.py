@@ -14,7 +14,7 @@ df_play=pd.read_parquet('data/df_playtime.parquet')
 df_merge_g2_group=pd.read_parquet('data/df_useforgenre.parquet')
 #tabla_pivote_norm=pd.read_parquet('data\tabla_pivote_norm.parquet')
 #df_users_sim=pd.read_parquet('data\df_items_sim.parquet')
-df_items_sim=pd.read_parquet('data\df_items_sim.parquet')
+#df_items_sim=pd.read_parquet('data\df_items_sim.parquet')
 
 
 @app.get('/PlayTimeGenre')
@@ -70,7 +70,7 @@ def UserForGenre(genero: str):
     
     # Retornar el resultado como un diccionario
     return {"Usuario con más horas jugadas para Género {}".format(genero): max_playtime_user, "Horas jugadas": acumulacion_horas}
-
+'''
 @app.get('/recomendacion_juego')
 def recomendacion_juego(game):
     '''
@@ -87,6 +87,6 @@ def recomendacion_juego(game):
     print('Similar games to {} include:\n'.format(game))
     for item in df_items_sim.sort_values(by = game, ascending = False).index[1:6]:
         print('No. {}: {}'.format(count, item))
-        count +=1    
+        count +=1    '''
 
 
