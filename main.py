@@ -12,7 +12,7 @@ def read_root():                    #FUNCION EN ESTA RUTA
     
 df_play=pd.read_parquet('data/df_playtime.parquet')
 df_merge_g2_group=pd.read_parquet('data/df_useforgenre.parquet')
-tabla_pivote_norm=pd.read_parquet('data\tabla_pivote_norm.parquet')
+#tabla_pivote_norm=pd.read_parquet('data\tabla_pivote_norm.parquet')
 #df_users_sim=pd.read_parquet('data\df_items_sim.parquet')
 df_items_sim=pd.read_parquet('data\df_items_sim.parquet')
 
