@@ -38,6 +38,7 @@ def PlayTimeGenre(genero: str):
     
     # Retornar el resultado como un diccionario
     return {"Año de lanzamiento con más horas jugadas para Género {}".format(genero): max_playtime_year}
+    
 @app.get('/recomendacion_juego')
 def recomendacion_juego(game):
     '''
