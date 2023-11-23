@@ -12,9 +12,11 @@ def read_root():                    #FUNCION EN ESTA RUTA
     
 df_play=pd.read_parquet('data/df_playtime.parquet')
 df_useforgenre=pd.read_parquet('data/df_useforgenre.parquet')
-tabla_pivote_norm=pd.read_parquet('data/tabla_pivote_norm.parquet')
-df_users_sim=pd.read_parquet('data/df_items_sim.parquet')
+#tabla_pivote_norm=pd.read_parquet('data/tabla_pivote_norm.parquet')
+#df_users_sim=pd.read_parquet('data/df_items_sim.parquet')
 df_items_sim=pd.read_parquet('data/df_items_sim.parquet')
+df_worst_1=pd.read_parquet('data/df_worst.parquet')
+df_senti=pd.read_parquet('data/df_senti.parquet')
 
 
 @app.get('/PlayTimeGenre')
@@ -55,6 +57,39 @@ def UserForGenre(genero):
     acumulacion_horas = [{'Año': year, 'Horas': hours} for year, hours in grouped_by_year.items()]    
     # Retornar el resultado como un diccionario
     return {"Usuario con más horas jugadas para Género {}".format(genero): max_playtime_user, "Horas jugadas": acumulacion_horas}
+    
+@app.get('/UsersWorstDeveloper')  
+def UsersWorstDeveloper( año : int ):
+    # Filtrar el DataFrame df_developer por el año proporcionado
+    developer_by_year = df_worst_1[df_worst_1['release_anio'] == año]
+
+    # Obtener el top 3 de desarrolladoras con juegos MENOS recomendados y sus valores según rank
+    top3_worst_developer = developer_by_year.sort_values(by='rank', ascending=True).head(3)
+
+    # Formatear el resultado como lista de diccionarios
+    result = [{"Puesto {}: {}".format(rank, developer)} for rank, developer in zip(top3_worst_developer['rank'], top3_worst_developer['developer'])]
+
+    return result
+
+
+    #retorno: [{"Puesto 1" : X}, {"Puesto 2" : Y},{"Puesto 3" : Z}]
+    
+    
+@app.get('/sentiment_analysis')    
+def sentiment_analysis( empresa_desarrolladora : str): 
+    # Filtrar el DataFrame por la empresa desarrolladora proporcionada
+    developer_df = df_senti[df_senti['developer'] == empresa_desarrolladora]
+
+    #Crear el diccionario de retorno
+    result = {empresa_desarrolladora: {'Negative': 0, 'Neutral': 0, 'Positive': 0}}
+
+    # Llenar el diccionario con la cantidad de registros para cada categoría de sentimiento
+    for sentiment, count in zip(developer_df['sentiment_analysis'], developer_df['reviews_recommend_count']):
+        sentiment_mapping = {0: 'Negative', 1: 'Neutral', 2: 'Positive'}
+        sentiment_category = sentiment_mapping[sentiment]
+        result[empresa_desarrolladora][sentiment_category] += count
+
+    return result
 
 @app.get('/recomendacion_juego')
 def recomendacion_juego(game):
@@ -73,7 +108,7 @@ def recomendacion_juego(game):
             break
     return recomendaciones
 
-def recomendacion_usuario(user):
+'''def recomendacion_usuario(user):
     # Verifica si el usuario está presente en las columnas de piv_norm (si no está, devuelve un mensaje)
     if user not in tabla_pivote_norm.columns:
         return('No data available on user {}'.format(user))
@@ -110,4 +145,4 @@ def recomendacion_usuario(user):
         else:
             break
     
-    return recomendaciones
+    return recomendaciones'''
