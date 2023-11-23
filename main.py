@@ -39,25 +39,9 @@ def PlayTimeGenre(genero: str):
     # Retornar el resultado como un diccionario
     return {"Año de lanzamiento con más horas jugadas para Género {}".format(genero): max_playtime_year}
     
-@app.get('/recomendacion_juego')
-def recomendacion_juego(game):
-    '''
-    Muestra una lista de juegos similares a un juego dado.
 
-    Args:
-        game (str): El nombre del juego para el cual se desean encontrar juegos similares.
 
-    Returns:
-        None: Esta función imprime una lista de juegos 5 similares al dado.
-
-    '''
-    count = 1
-    print('Similar games to {} include:\n'.format(game))
-    for item in df_items_sim.sort_values(by = game, ascending = False).index[1:6]:
-        print('No. {}: {}'.format(count, item))
-        count +=1    
-
-'''@app.get('/UserForGenre')
+@app.get('/UserForGenre')
 def UserForGenre(genero: str):
     # Realizar el merge de los DataFrames
     #df_merge = pd.merge(df_games[['genres', 'item_id', 'release_anio']], df_items[['playtime_forever', 'item_id']], on='item_id')
@@ -85,8 +69,24 @@ def UserForGenre(genero: str):
     acumulacion_horas = [{'Año': year, 'Horas': hours} for year, hours in grouped_by_year.items()]
     
     # Retornar el resultado como un diccionario
-    return {"Usuario con más horas jugadas para Género {}".format(genero): max_playtime_user, "Horas jugadas": acumulacion_horas}'''
+    return {"Usuario con más horas jugadas para Género {}".format(genero): max_playtime_user, "Horas jugadas": acumulacion_horas}
 
-    
+@app.get('/recomendacion_juego')
+def recomendacion_juego(game):
+    '''
+    Muestra una lista de juegos similares a un juego dado.
+
+    Args:
+        game (str): El nombre del juego para el cual se desean encontrar juegos similares.
+
+    Returns:
+        None: Esta función imprime una lista de juegos 5 similares al dado.
+
+    '''
+    count = 1
+    print('Similar games to {} include:\n'.format(game))
+    for item in df_items_sim.sort_values(by = game, ascending = False).index[1:6]:
+        print('No. {}: {}'.format(count, item))
+        count +=1    
 
 
