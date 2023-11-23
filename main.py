@@ -54,7 +54,7 @@ def UserForGenre(genero):
     # Crear lista de acumulación de horas jugadas por año
     acumulacion_horas = [{'Año': year, 'Horas': hours} for year, hours in grouped_by_year.items()]    
     # Retornar el resultado como un diccionario
-    return {"Usuario con más horas jugadas para Género {}".format(genero): max_playtime_user, "Horas jugadas": acumulacion_horas}
+        return {"Usuario con más horas jugadas para Género {}".format(genero): max_playtime_user, "Horas jugadas": acumulacion_horas}
 
 @app.get('/recomendacion_juego')
 def recomendacion_juego(game):
