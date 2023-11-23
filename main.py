@@ -11,7 +11,7 @@ def read_root():                    #FUNCION EN ESTA RUTA
     return {"Hello": "World"}
     
 df_play=pd.read_parquet('data/df_playtime.parquet')
-df_merge_g2_group=pd.read_parquet('data/df_useforgenre.parquet')
+df_useforgenre=pd.read_parquet('data/df_useforgenre.parquet')
 #tabla_pivote_norm=pd.read_parquet('data\tabla_pivote_norm.parquet')
 #df_users_sim=pd.read_parquet('data\df_items_sim.parquet')
 #df_items_sim=pd.read_parquet('data\df_items_sim.parquet')
@@ -37,17 +37,15 @@ def PlayTimeGenre(genero: str):
     #max_playtime = grouped.max()
     
     # Retornar el resultado como un diccionario
-    return {"Año de lanzamiento con más horas jugadas para Género {}".format(genero): max_playtime_year}
+    return {"Año de lanzamiento con más horas jugadas para Género {}".format(genero): max_playtime_year}    
     
-
-
 @app.get('/UserForGenre')
-def UserForGenre(genero: str):
+def UserForGenre(genero):
     # Realizar el merge de los DataFrames
     #df_merge = pd.merge(df_games[['genres', 'item_id', 'release_anio']], df_items[['playtime_forever', 'item_id']], on='item_id')
     
     # Filtrar por el género especificado
-    df_genre = df_merge_g2_group[df_merge_g2_group['genres'] == genero]
+    df_genre = df_useforgenre[df_useforgenre['genres'] == genero]
     
     # Si no hay datos para el género especificado, retorna un mensaje
     if df_genre.empty:
@@ -73,16 +71,14 @@ def UserForGenre(genero: str):
 '''
 @app.get('/recomendacion_juego')
 def recomendacion_juego(game):
-    '''
+ 
     Muestra una lista de juegos similares a un juego dado.
 
     Args:
         game (str): El nombre del juego para el cual se desean encontrar juegos similares.
 
     Returns:
-        None: Esta función imprime una lista de juegos 5 similares al dado.
-
-    '''
+        None: Esta función imprime una lista de juegos 5 similares al dado.    
     count = 1
     print('Similar games to {} include:\n'.format(game))
     for item in df_items_sim.sort_values(by = game, ascending = False).index[1:6]:
