@@ -12,8 +12,8 @@ def read_root():                    #FUNCION EN ESTA RUTA
     
 df_play=pd.read_parquet('data/df_playtime.parquet')
 df_useforgenre=pd.read_parquet('data/df_useforgenre.parquet')
-#tabla_pivote_norm=pd.read_parquet('data\tabla_pivote_norm.parquet')
-#df_users_sim=pd.read_parquet('data\df_items_sim.parquet')
+tabla_pivote_norm=pd.read_parquet('data/tabla_pivote_norm.parquet')
+df_users_sim=pd.read_parquet('data/df_items_sim.parquet')
 df_items_sim=pd.read_parquet('data/df_items_sim.parquet')
 
 
@@ -73,4 +73,41 @@ def recomendacion_juego(game):
             break
     return recomendaciones
 
-
+def recomendacion_usuario(user):
+    # Verifica si el usuario está presente en las columnas de piv_norm (si no está, devuelve un mensaje)
+    if user not in tabla_pivote_norm.columns:
+        return('No data available on user {}'.format(user))
+    
+    # Obtiene los usuarios más similares al usuario dado
+    sim_users = df_users_sim.sort_values(by=user, ascending=False).index[1:11]
+    
+    best = [] # Lista para almacenar los juegos mejor calificados por usuarios similares
+    most_common = {} # Diccionario para contar cuántas veces se recomienda cada juego
+    
+    # Para cada usuario similar, encuentra el juego mejor calificado y lo agrega a la lista 'best'
+    for i in sim_users:
+        i = str(i)
+        max_score = tabla_pivote_norm.loc[:, i].max()
+        best.append(tabla_pivote_norm[tabla_pivote_norm.loc[:, i]==max_score].index.tolist())
+    
+    # Cuenta cuántas veces se recomienda cada juego
+    for i in range(len(best)):
+        for j in best[i]:
+            if j in most_common:
+                most_common[j] += 1
+            else:
+                most_common[j] = 1
+    
+    # Ordena los juegos por la frecuencia de recomendación en orden descendente
+    sorted_list = sorted(most_common.items(), key=operator.itemgetter(1), reverse=True)
+    recomendaciones = {} 
+    contador = 1 
+    # Devuelve los 5 juegos más recomendados
+    for juego, _ in sorted_list:
+        if contador <= 5:
+            recomendaciones[contador] = juego 
+            contador += 1 
+        else:
+            break
+    
+    return recomendaciones
