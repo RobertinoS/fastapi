@@ -17,8 +17,8 @@ df_useforgenre=pd.read_parquet('data/df_useforgenre.parquet')
 df_items_sim=pd.read_parquet('data/df_items_sim.parquet')
 df_worst_1=pd.read_parquet('data/df_worst.parquet')
 df_senti=pd.read_parquet('data/df_senti.parquet')
-df_recom=pd.read_parquet('data/df_recom.parquet')
-
+#df_recom=pd.read_parquet('data/df_recom.parquet')
+df_merge_id=pd.read_parquet('data/df_recomendacion.parquet')
 
 @app.get('/PlayTimeGenre')
 def PlayTimeGenre(genero: str):
@@ -108,21 +108,14 @@ def sentiment_analysis( empresa_desarrolladora : str):
     return result
 
 @app.get('/recomendacion_juego')
-def recomendacion_juego(game):
-    similar_games = df_items_sim.sort_values(by=game, ascending=False).iloc[1:6]
-    count = 1
-    contador = 1
-    recomendaciones = {}
-    
-    for item in similar_games:
-        if contador <= 5:
-            item = str(item)
-            recomendaciones[count] = item
-            count += 1
-            contador += 1 
-        else:
-            break
-    return recomendaciones
+def recomendacion_juego(id):
+    try:
+        # Busca el valor del modelo correspondiente al id
+        modelo = df_merge_id.loc[df_merge_id['id'] == id, 'model'].values[0]
+        return modelo
+    except IndexError:
+        # Maneja el caso en el que el id no se encuentra en el DataFrame
+        return f"No se encontró un modelo para el id {id}"
 
 '''def recomendacion_usuario(user):
     # Verifica si el usuario está presente en las columnas de piv_norm (si no está, devuelve un mensaje)
