@@ -108,14 +108,15 @@ def sentiment_analysis( empresa_desarrolladora : str):
     return result
 
 @app.get('/recomendacion_juego')
-def recomendacion_juego(id):
-    try:
-        # Busca el valor del modelo correspondiente al id
-        modelo = df_merge_id.loc[df_merge_id['id'] == id, 'model'].values[0]
-        return modelo
-    except IndexError:
-        # Maneja el caso en el que el id no se encuentra en el DataFrame
+def recomendacion_juego(id:int):
+    # Filtrar el DataFrame por la empresa desarrolladora proporcionada
+    modelo = df_merge_id[df_merge_id['id'] == id]['model'].iloc[0]
+    if len(modelo) > 0:
+        recomendaciones_dict = {i + 1: juego for i, juego in enumerate(modelo)}
+        return recomendaciones_dict
+    else:
         return f"No se encontró un modelo para el id {id}"
+
 
 '''def recomendacion_usuario(user):
     # Verifica si el usuario está presente en las columnas de piv_norm (si no está, devuelve un mensaje)
