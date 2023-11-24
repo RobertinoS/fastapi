@@ -111,12 +111,13 @@ def sentiment_analysis( empresa_desarrolladora : str):
 def recomendacion_juego(id:int):
     # Filtrar el DataFrame por la empresa desarrolladora proporcionada
     modelo = df_merge_id[df_merge_id['id'] == id]['model'].iloc[0]
+    recomendaciones_dict = {}
     if len(modelo) > 0:
-        recomendaciones_dict = {i + 1: juego for i, juego in enumerate(modelo)}
+        for i in range(len(modelo)):
+            recomendaciones_dict[i + 1] = modelo[i]
         return recomendaciones_dict
     else:
         return f"No se encontró un modelo para el id {id}"
-
 
 '''def recomendacion_usuario(user):
     # Verifica si el usuario está presente en las columnas de piv_norm (si no está, devuelve un mensaje)
