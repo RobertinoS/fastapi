@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 import pandas as pd 
 from typing import Optional
-from fastapi import FastAPI, Response
+from fastapi import FastAPI, Response, Query
 from fastapi.responses import HTMLResponse
 
 #http://127.0.0.1:8000 (ruta raiz)
