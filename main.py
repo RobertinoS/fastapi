@@ -3,14 +3,10 @@ import pandas as pd
 from typing import Optional
 from fastapi import FastAPI, Response
 from fastapi.responses import HTMLResponse
-app = FastAPI()
-
 
 #http://127.0.0.1:8000 (ruta raiz)
 
-
 app = FastAPI()
-
 @app.get("/", response_class=HTMLResponse)  # Ruta de la página inicial
 def presentacion():
     '''
@@ -27,13 +23,17 @@ def presentacion():
                 body {
                     font-family: Arial, sans-serif;
                     padding: 20px;
+                    background-image: url('https://cdn.businessinsider.es/sites/navi.axelspringer.es/public/media/image/2021/01/steam-juegos-2203341.jpg?tf=1200x');
+                    background-size: cover;
+                    color: white;
+                    text-shadow: 2px 2px 4px #000000;
                 }
                 h1 {
-                    color: #333;
+                    color: #fff;
                     text-align: center;
                 }
                 p {
-                    color: #666;
+                    color: #fff;
                     text-align: center;
                     font-size: 18px;
                     margin-top: 20px;
@@ -44,10 +44,11 @@ def presentacion():
             <h1>Bienvenidos a mi API sobre el proyecto individual 1 sobre la plataforma Steam</h1>
             <p>Mi nombre es Robertino Sanguedolce del cohorte nº17.</p>
             <p>INSTRUCCIONES:</p>
-            <p>Escriba <span style="background-color: lightgray;">/docs</span> a continuación de la URL actual de esta página para interactuar con la API</p>
+            <p>Escriba <span style="background-color: lightgray; color: black;">/docs</span> a continuación de la URL actual de esta página para interactuar con la API</p>
         </body>
     </html>
     '''
+
 
 
 #-------------------------------------------------------------------------------------------------------
