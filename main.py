@@ -6,7 +6,7 @@ from typing import Optional
 app = FastAPI()
 
 #http://127.0.0.1:8000 (ruta raiz)
-@app.get("/")                       #ruta
+@app.get("/presentacion")                       #ruta
 def presentacion():
     '''
     Genera una página de presentación HTML para la API del proyecto individual 1 sobre la plataforma Steam.
