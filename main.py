@@ -158,7 +158,7 @@ def UsersRecommend( año :int = Query(..., description="Ingrese un año que este
     # retorno: [{"Puesto 1" : X}, {"Puesto 2" : Y},{"Puesto 3" : Z}]
     
 @app.get('/UsersWorstDeveloper')  
-def UsersWorstDeveloper( año : int = Query(..., description="Ingrese un año que este en el rango entre el 2010 y 2015")):
+def UsersWorstDeveloper( año : int = Query(..., description="Ingrese un año que este en el rango entre el 2011 y 2015")):
     # Filtrar el DataFrame df_developer por el año proporcionado
     developer_by_year = df_worst_1[df_worst_1['year'] == año]
 
