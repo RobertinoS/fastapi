@@ -64,7 +64,10 @@ df_senti=pd.read_parquet('data/df_senti.parquet')
 df_merge_id=pd.read_parquet('data/df_recomendacion.parquet')
 #---------------------------------------------------------------------------------------------------------
 @app.get('/PlayTimeGenre')
-def PlayTimeGenre(genero: str):
+
+def PlayTimeGenre(genero: str = Query(..., description="Ingrese el género del videojuego. Por ejemplo, un género válido podría ser 'Action'.")):
+    # Tu código aquí
+    #pass
     # Filtrar por el género especificado
     df_genre = df_play[df_play['genres'] == genero]    
     # Si no hay datos para el género especificado, retorna un mensaje
