@@ -142,6 +142,7 @@ def UsersRecommend(año: int = Query(..., description="Ingrese un año que este 
         resultado.append({f"Puesto {puesto}": f"{titulo}"})
 
     return resultado'''
+@app.get('/UsersRecommend')
 def UsersRecommend( año :int = Query(..., description="Ingrese un año que este en el rango entre el 2010 y 2015")):
     # Filtrar el DataFrame df_top3 por el año proporcionado
     top3_by_year = df_recom[df_recom['year'] == año]
