@@ -142,24 +142,24 @@ def UsersRecommend(año: int = Query(..., description="Ingrese un año que este 
         resultado.append({f"Puesto {puesto}": f"{titulo}"})
 
     return resultado'''
-'''def UsersRecommend( año : int = Query(..., description="Ingrese un año que este en el rango entre el 2010 y 2015")):
+def UsersRecommend( año :int = Query(..., description="Ingrese un año que este en el rango entre el 2010 y 2015")):
     # Filtrar el DataFrame df_top3 por el año proporcionado
-    top3_by_year = df_recom[df_recom['release_anio'] == año]
+    top3_by_year = df_recom[df_recom['year'] == año]
 
 #Crear la lista de diccionarios
     resultado = []
     for index, row in top3_by_year.iterrows():
         puesto = row['rank']
         titulo = row['title']
-        año = int(row['release_anio'])
+        año = int(row['year'])
         resultado.append({f"Puesto {puesto}": f"{titulo}"})
     return resultado
-    # retorno: [{"Puesto 1" : X}, {"Puesto 2" : Y},{"Puesto 3" : Z}]'''
+    # retorno: [{"Puesto 1" : X}, {"Puesto 2" : Y},{"Puesto 3" : Z}]
     
 @app.get('/UsersWorstDeveloper')  
 def UsersWorstDeveloper( año : int = Query(..., description="Ingrese un año que este en el rango entre el 2010 y 2015")):
     # Filtrar el DataFrame df_developer por el año proporcionado
-    developer_by_year = df_worst_1[df_worst_1['release_anio'] == año]
+    developer_by_year = df_worst_1[df_worst_1['year'] == año]
 
     # Obtener el top 3 de desarrolladoras con juegos MENOS recomendados y sus valores según rank
     top3_worst_developer = developer_by_year.sort_values(by='rank', ascending=True).head(3)
