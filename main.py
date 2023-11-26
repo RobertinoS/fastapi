@@ -119,8 +119,7 @@ def UserForGenre(genero: str = Query(..., description="Ingrese el género del vi
     acumulacion_horas = [{'Año': year, 'Horas': hours} for year, hours in grouped_by_year.items()]    
     # Retornar el resultado como un diccionario
     return {"Usuario con más horas jugadas para Género {}".format(genero): max_playtime_user, "Horas jugadas": acumulacion_horas}
-@app.get('/UsersRecommend') 
-
+'''
 @app.get('/UsersRecommend')
 def UsersRecommend(año: int = Query(..., description="Ingrese un año que este en el rango entre el 2010 y 2015")):
     # Verificar si el año es válido
@@ -142,7 +141,7 @@ def UsersRecommend(año: int = Query(..., description="Ingrese un año que este 
         año = int(row['release_anio'])
         resultado.append({f"Puesto {puesto}": f"{titulo}"})
 
-    return resultado
+    return resultado'''
 '''def UsersRecommend( año : int = Query(..., description="Ingrese un año que este en el rango entre el 2010 y 2015")):
     # Filtrar el DataFrame df_top3 por el año proporcionado
     top3_by_year = df_recom[df_recom['release_anio'] == año]
@@ -158,7 +157,7 @@ def UsersRecommend(año: int = Query(..., description="Ingrese un año que este 
     # retorno: [{"Puesto 1" : X}, {"Puesto 2" : Y},{"Puesto 3" : Z}]'''
     
 @app.get('/UsersWorstDeveloper')  
-def UsersWorstDeveloper( año : int ):
+def UsersWorstDeveloper( año : int = Query(..., description="Ingrese un año que este en el rango entre el 2010 y 2015")):
     # Filtrar el DataFrame df_developer por el año proporcionado
     developer_by_year = df_worst_1[df_worst_1['release_anio'] == año]
 
