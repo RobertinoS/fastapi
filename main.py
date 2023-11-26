@@ -7,8 +7,43 @@ app = FastAPI()
 
 #http://127.0.0.1:8000 (ruta raiz)
 @app.get("/")                       #ruta
-def read_root():                    #FUNCION EN ESTA RUTA
-    return {"Hello": "World"}
+def presentacion():
+    '''
+    Genera una página de presentación HTML para la API del proyecto individual 1 sobre la plataforma Steam.
+    
+    Returns:
+    str: Código HTML que muestra la página de presentación.
+    '''
+    return '''
+    <html>
+        <head>
+            <title>API Proyecto Individual 1</title>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    padding: 20px;
+                }
+                h1 {
+                    color: #333;
+                    text-align: center;
+                }
+                p {
+                    color: #666;
+                    text-align: center;
+                    font-size: 18px;
+                    margin-top: 20px;
+                }
+            </style>
+        </head>
+        <body>
+            <h1>Bienvenidos a mi API sobre el proyecto individual 1 sobre la plataforma Steam</h1>
+            <p>Mi nombre es Robertino Sanguedolce del cohorte nº17.</p>
+            <p>INSTRUCCIONES:</p>
+            <p>Escriba <span style="background-color: lightgray;">/docs</span> a continuación de la URL actual de esta página para interactuar con la API</p>
+        </body>
+    </html>
+    '''
+-------------------------------------------------------------------------------------------------------
     
 df_play=pd.read_parquet('data/df_playtime.parquet')
 df_useforgenre=pd.read_parquet('data/df_useforgenre.parquet')
@@ -19,7 +54,7 @@ df_worst_1=pd.read_parquet('data/df_worst.parquet')
 df_senti=pd.read_parquet('data/df_senti.parquet')
 #df_recom=pd.read_parquet('data/df_recom.parquet')
 df_merge_id=pd.read_parquet('data/df_recomendacion.parquet')
-
+---------------------------------------------------------------------------------------------------------
 @app.get('/PlayTimeGenre')
 def PlayTimeGenre(genero: str):
     # Realizar el merge de los DataFrames
