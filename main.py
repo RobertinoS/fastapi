@@ -60,7 +60,7 @@ df_useforgenre=pd.read_parquet('data/df_useforgenre.parquet')
 #df_items_sim=pd.read_parquet('data/df_items_sim.parquet')
 df_worst_1=pd.read_parquet('data/df_worst.parquet')
 df_senti=pd.read_parquet('data/df_senti.parquet')
-#df_recom=pd.read_parquet('data/df_recom.parquet')
+df_recom=pd.read_parquet('data/df_recom.parquet')
 df_merge_id=pd.read_parquet('data/df_recomendacion.parquet')
 #---------------------------------------------------------------------------------------------------------
 @app.get('/PlayTimeGenre')
