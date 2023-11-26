@@ -99,14 +99,14 @@ def PlayTimeGenre(genero: str):
     return {"Año de lanzamiento con más horas jugadas para Género {}".format(genero): max_playtime_year} '''   
     
 @app.get('/UserForGenre')
-def UserForGenre(genero):
+def UserForGenre(genero: str = Query(..., description="Ingrese el género del videojuego. Por ejemplo, un género válido podría ser 'Action'.")):
     # Realizar el merge de los DataFrames
     #df_merge = pd.merge(df_games[['genres', 'item_id', 'release_anio']], df_items[['playtime_forever', 'item_id']], on='item_id')    
     # Filtrar por el género especificado
     df_genre = df_useforgenre[df_useforgenre['genres'] == genero]    
     # Si no hay datos para el género especificado, retorna un mensaje
     if df_genre.empty:
-        return f"No hay datos para el género '{genero}'"    
+        return HTTPException(status_code=404, detail=f"No hay datos para el género '{genero}'")     
     # Agrupar por usuario y género y calcular las horas jugadas sumando los valores
     grouped = df_genre.groupby(['user_id'])['playtime_forever'].sum()    
     # Encontrar el usuario con más horas jugadas
@@ -121,7 +121,29 @@ def UserForGenre(genero):
     return {"Usuario con más horas jugadas para Género {}".format(genero): max_playtime_user, "Horas jugadas": acumulacion_horas}
 @app.get('/UsersRecommend') 
 
-def UsersRecommend( año : int):
+@app.get('/UsersRecommend')
+def UsersRecommend(año: int = Query(..., description="Ingrese un año que este en el rango entre el 2010 y 2015")):
+    # Verificar si el año es válido
+    if año <= 0 or año not in range(2010, 2016):
+        raise HTTPException(status_code=400, detail="El año ingresado no posee datos")
+
+    # Filtrar el DataFrame df_top3 por el año proporcionado
+    top3_by_year = df_recom[df_recom['release_anio'] == año]
+
+    # Verificar si hay datos para el año proporcionado
+    if top3_by_year.empty:
+        raise HTTPException(status_code=404, detail="El año ingresado no posee datos")
+
+    # Crear la lista de diccionarios
+    resultado = []
+    for index, row in top3_by_year.iterrows():
+        puesto = row['rank']
+        titulo = row['title']
+        año = int(row['release_anio'])
+        resultado.append({f"Puesto {puesto}": f"{titulo}"})
+
+    return resultado
+'''def UsersRecommend( año : int = Query(..., description="Ingrese un año que este en el rango entre el 2010 y 2015")):
     # Filtrar el DataFrame df_top3 por el año proporcionado
     top3_by_year = df_recom[df_recom['release_anio'] == año]
 
@@ -133,7 +155,7 @@ def UsersRecommend( año : int):
         año = int(row['release_anio'])
         resultado.append({f"Puesto {puesto}": f"{titulo}"})
     return resultado
-    # retorno: [{"Puesto 1" : X}, {"Puesto 2" : Y},{"Puesto 3" : Z}]
+    # retorno: [{"Puesto 1" : X}, {"Puesto 2" : Y},{"Puesto 3" : Z}]'''
     
 @app.get('/UsersWorstDeveloper')  
 def UsersWorstDeveloper( año : int ):
