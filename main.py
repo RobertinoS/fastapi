@@ -1,12 +1,17 @@
-from fastapi import FastAPI
 from pydantic import BaseModel
 import pandas as pd 
 from typing import Optional
+from fastapi import FastAPI, Response
+from fastapi.responses import HTMLResponse
+app = FastAPI()
+
+
+#http://127.0.0.1:8000 (ruta raiz)
+
 
 app = FastAPI()
 
-#http://127.0.0.1:8000 (ruta raiz)
-@app.get("/")  # Ruta de la página inicial
+@app.get("/", response_class=HTMLResponse)  # Ruta de la página inicial
 def presentacion():
     '''
     Genera una página de presentación HTML para la API del proyecto individual 1 sobre la plataforma Steam.
@@ -43,6 +48,7 @@ def presentacion():
         </body>
     </html>
     '''
+
 
 #-------------------------------------------------------------------------------------------------------
     
