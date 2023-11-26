@@ -6,7 +6,7 @@ from typing import Optional
 app = FastAPI()
 
 #http://127.0.0.1:8000 (ruta raiz)
-@app.get("/presentacion")                       #ruta
+@app.get("/")  # Ruta de la página inicial
 def presentacion():
     '''
     Genera una página de presentación HTML para la API del proyecto individual 1 sobre la plataforma Steam.
@@ -43,6 +43,7 @@ def presentacion():
         </body>
     </html>
     '''
+
 #-------------------------------------------------------------------------------------------------------
     
 df_play=pd.read_parquet('data/df_playtime.parquet')
