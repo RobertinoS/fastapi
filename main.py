@@ -55,9 +55,6 @@ def presentacion():
     
 df_play=pd.read_parquet('data/df_playtime.parquet')
 df_useforgenre=pd.read_parquet('data/df_useforgenre.parquet')
-#tabla_pivote_norm=pd.read_parquet('data/tabla_pivote_norm.parquet')
-#df_users_sim=pd.read_parquet('data/df_items_sim.parquet')
-#df_items_sim=pd.read_parquet('data/df_items_sim.parquet')
 df_worst_1=pd.read_parquet('data/df_worst.parquet')
 df_senti=pd.read_parquet('data/df_senti.parquet')
 df_recom=pd.read_parquet('data/df_recom.parquet')
@@ -80,24 +77,7 @@ def PlayTimeGenre(genero: str = Query(..., description="Ingrese el género del v
     #max_playtime = grouped.max()    
     # Retornar el resultado como un diccionario
     return {"Año de lanzamiento con más horas jugadas para Género {}".format(genero): max_playtime_year}
-    
-'''@app.get('/PlayTimeGenre')
-def PlayTimeGenre(genero: str):
-    # Realizar el merge de los DataFrames
-    #df_merge = pd.merge(df_games[['genres', 'release_anio', 'item_id']], df_items[['playtime_forever', 'item_id']], on='item_id')    
-    # Filtrar por el género especificado
-    df_genre = df_play[df_play['genres'] == genero]    
-    # Si no hay datos para el género especificado, retorna un mensaje
-    if df_genre.empty:
-        return f"No hay datos para el género '{genero}'"    
-    # Agrupar por año y calcular las horas jugadas sumando los valores
-    grouped = df_genre.groupby('release_anio')['playtime_forever'].sum()    
-    # Encontrar el año con más horas jugadas
-    max_playtime_year = grouped.idxmax()
-    #max_playtime = grouped.max()    
-    # Retornar el resultado como un diccionario
-    return {"Año de lanzamiento con más horas jugadas para Género {}".format(genero): max_playtime_year} '''   
-    
+        
 @app.get('/UserForGenre')
 def UserForGenre(genero: str = Query(..., description="Ingrese el género del videojuego. Por ejemplo, un género válido podría ser 'Action'.")):
     # Realizar el merge de los DataFrames
@@ -119,29 +99,7 @@ def UserForGenre(genero: str = Query(..., description="Ingrese el género del vi
     acumulacion_horas = [{'Año': year, 'Horas': hours} for year, hours in grouped_by_year.items()]    
     # Retornar el resultado como un diccionario
     return {"Usuario con más horas jugadas para Género {}".format(genero): max_playtime_user, "Horas jugadas": acumulacion_horas}
-'''
-@app.get('/UsersRecommend')
-def UsersRecommend(año: int = Query(..., description="Ingrese un año que este en el rango entre el 2010 y 2015")):
-    # Verificar si el año es válido
-    if año <= 0 or año not in range(2010, 2016):
-        raise HTTPException(status_code=400, detail="El año ingresado no posee datos")
 
-    # Filtrar el DataFrame df_top3 por el año proporcionado
-    top3_by_year = df_recom[df_recom['release_anio'] == año]
-
-    # Verificar si hay datos para el año proporcionado
-    if top3_by_year.empty:
-        raise HTTPException(status_code=404, detail="El año ingresado no posee datos")
-
-    # Crear la lista de diccionarios
-    resultado = []
-    for index, row in top3_by_year.iterrows():
-        puesto = row['rank']
-        titulo = row['title']
-        año = int(row['release_anio'])
-        resultado.append({f"Puesto {puesto}": f"{titulo}"})
-
-    return resultado'''
 @app.get('/UsersRecommend')
 def UsersRecommend( año :int = Query(..., description="Ingrese un año que este en el rango entre el 2010 y 2015")):
     # Filtrar el DataFrame df_top3 por el año proporcionado
@@ -202,41 +160,3 @@ def recomendacion_juego(id:int):
     else:
         return f"No se encontró un modelo para el id {id}"
 
-'''def recomendacion_usuario(user):
-    # Verifica si el usuario está presente en las columnas de piv_norm (si no está, devuelve un mensaje)
-    if user not in tabla_pivote_norm.columns:
-        return('No data available on user {}'.format(user))
-    
-    # Obtiene los usuarios más similares al usuario dado
-    sim_users = df_users_sim.sort_values(by=user, ascending=False).index[1:11]
-    
-    best = [] # Lista para almacenar los juegos mejor calificados por usuarios similares
-    most_common = {} # Diccionario para contar cuántas veces se recomienda cada juego
-    
-    # Para cada usuario similar, encuentra el juego mejor calificado y lo agrega a la lista 'best'
-    for i in sim_users:
-        i = str(i)
-        max_score = tabla_pivote_norm.loc[:, i].max()
-        best.append(tabla_pivote_norm[tabla_pivote_norm.loc[:, i]==max_score].index.tolist())
-    
-    # Cuenta cuántas veces se recomienda cada juego
-    for i in range(len(best)):
-        for j in best[i]:
-            if j in most_common:
-                most_common[j] += 1
-            else:
-                most_common[j] = 1
-    
-    # Ordena los juegos por la frecuencia de recomendación en orden descendente
-    sorted_list = sorted(most_common.items(), key=operator.itemgetter(1), reverse=True)
-    recomendaciones = {} 
-    contador = 1 
-    # Devuelve los 5 juegos más recomendados
-    for juego, _ in sorted_list:
-        if contador <= 5:
-            recomendaciones[contador] = juego 
-            contador += 1 
-        else:
-            break
-    
-    return recomendaciones'''
